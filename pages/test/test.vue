@@ -119,7 +119,7 @@ let isPopupShow = ref(true); // 是否显示播放列表
  */
 function getSongIndex() {
   const index = uni.getStorageSync('songIndex');
-  return index !== null ? parseInt(index) : 0;
+  return index.data !== null ? parseInt(index.data) : 0;
 }
 // 初始化 songIndex 的值
 songIndex.value = getSongIndex();
@@ -134,7 +134,12 @@ onMounted(() => {
   songIndex.value = JSON.parse(uni.getStorageSync("songIndex")) || 0;
 
   // 获取音频播放状态
-  playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
+  // let a = uni.getStorageSync("playMode");
+  // let a = JSON.parse(uni.getStorageSync("playMode"));
+  // console.log('a',a);
+  if(uni.getStorageSync("songIndex")) playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
+  // playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
+  // playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
   // 创建音频上下文
   context.value = uni.createInnerAudioContext();
   // context.value.autoplay = true; // 进入页面播放

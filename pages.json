@@ -30,6 +30,13 @@
 			{
 				"navigationBarTitleText" : "测试"
 			}
+		},
+		{
+			"path" : "pages/my/local/local",
+			"style" : 
+			{
+				"navigationBarTitleText" : "本地歌曲"
+			}
 		}
 	],
 	"globalStyle": {
