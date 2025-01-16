@@ -32,10 +32,13 @@
 			}
 		},
 		{
-			"path" : "pages/my/local/local",
+			"path" : "pages/my/local/local"
+		},
+		{
+			"path" : "pages/my/local/scan/scan",
 			"style" : 
 			{
-				"navigationBarTitleText" : "本地歌曲"
+				"navigationBarTitleText" : "扫描歌曲"
 			}
 		}
 	],

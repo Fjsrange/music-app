@@ -16,6 +16,13 @@
   </header>
 
   <!-- 排序 -->
+  <view class="" v-for="item in audioList" :key="item.id">
+    <view class=""> 歌曲名：{{ item.title }} </view>
+    <br />
+    <view class=""> 歌手名：{{ item.artist }} </view>
+    <br />
+    <view class=""> 路径：{{ item.path }} </view>
+  </view>
   <view
     class=""
     style="
@@ -89,8 +96,11 @@
     :style="{ display: isPopupVisible ? 'block' : 'none' }"
   >
     <view class="setting-popup-content">
-      <view class="setting-popup-item">设置</view>
-      <view class="setting-popup-item">退出登录</view>
+      <!-- <view class="setting-popup-item">设置</view> -->
+      <view class="setting-popup-item" @click="goScan">扫描歌曲</view>
+      <!-- <navigator url="/pages/my/local/scan/scan">
+        <view>扫描歌曲</view>
+      </navigator> -->
     </view>
   </view>
 
@@ -105,14 +115,40 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
-const isPopupVisible = ref(false);
+const isPopupVisible = ref(false); // 控制弹窗显示与隐藏
+const audioList = ref([]); // 本地音频列表
 
+onMounted(() => {
+  // 获取本地音频列表
+  // uni.getStorageSync({
+  //   key: "audioList",
+  //   success: function (res) {
+  //     console.log(res);
+
+  //     audioList.value = res.data;
+  //     console.log("audioList.value", audioList.value);
+  //   },
+  // });
+  console.log("666", JSON.parse(uni.getStorageSync("audio-list")));
+
+  audioList.value = JSON.parse(uni.getStorageSync("audio-list"));
+  console.log("audioList.value", audioList.value);
+});
+
+// 点击设置按钮
 function onRightButtonClick() {
   // 按钮点击事件处理逻辑
   // 直接修改DOM元素的style属性
   isPopupVisible.value = !isPopupVisible.value;
+}
+// 去扫描歌曲页面
+function goScan() {
+  uni.navigateTo({
+    url: "/pages/my/local/scan/scan",
+  });
+  isPopupVisible.value = false;
 }
 </script>
 

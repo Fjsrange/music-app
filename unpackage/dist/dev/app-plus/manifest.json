@@ -17,6 +17,9 @@
     "url": ""
   },
   "permissions": {
+    "Music": {
+      "description": "音乐播放"
+    },
     "UniNView": {
       "description": "UniNView原生渲染"
     }
@@ -40,6 +43,13 @@
     "usingComponents": true,
     "nvueStyleCompiler": "uni-app",
     "compilerVersion": 3,
+    "permissions": {
+      "Android": {
+        "MANAGE_EXTERNAL_STORAGE": {
+          "description": "管理外部存储"
+        }
+      }
+    },
     "distribute": {
       "google": {
         "permissions": [
