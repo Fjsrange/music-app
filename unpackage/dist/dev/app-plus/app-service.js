@@ -59,7 +59,7 @@ if (uni.restoreGlobal) {
     }
     return target;
   };
-  const _sfc_main$6 = {
+  const _sfc_main$7 = {
     __name: "searchVue",
     setup(__props) {
       const songName = debounceRef("", 500);
@@ -84,7 +84,7 @@ if (uni.restoreGlobal) {
       };
     }
   };
-  const ComponentsSearchVueSearchVue = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["__file", "D:/A-test/github/music-app/components/searchVue/searchVue.vue"]]);
+  const ComponentsSearchVueSearchVue = /* @__PURE__ */ _export_sfc(_sfc_main$7, [["__file", "D:/A-test/github/music-app/components/searchVue/searchVue.vue"]]);
   const code = 200;
   const msg = "成功";
   const data = [
@@ -814,7 +814,7 @@ if (uni.restoreGlobal) {
     data
   };
   const title = "hello";
-  const _sfc_main$5 = {
+  const _sfc_main$6 = {
     __name: "index",
     setup(__props) {
       uni.setStorageSync("movies", JSON.stringify(getMovies.data));
@@ -840,7 +840,7 @@ if (uni.restoreGlobal) {
       };
     }
   };
-  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["__file", "D:/A-test/github/music-app/pages/index/index.vue"]]);
+  const PagesIndexIndex = /* @__PURE__ */ _export_sfc(_sfc_main$6, [["__file", "D:/A-test/github/music-app/pages/index/index.vue"]]);
   function formatAppLog(type, filename, ...args) {
     if (uni.__log__) {
       uni.__log__(type, filename, ...args);
@@ -878,7 +878,7 @@ if (uni.restoreGlobal) {
       sum: 17
     }
   ];
-  const _sfc_main$4 = {
+  const _sfc_main$5 = {
     __name: "my",
     setup(__props) {
       formatAppLog("log", "at pages/my/my.vue:51", "tabList", tabList);
@@ -971,11 +971,11 @@ if (uni.restoreGlobal) {
       };
     }
   };
-  const PagesMyMy = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["__file", "D:/A-test/github/music-app/pages/my/my.vue"]]);
+  const PagesMyMy = /* @__PURE__ */ _export_sfc(_sfc_main$5, [["__file", "D:/A-test/github/music-app/pages/my/my.vue"]]);
   const _imports_0$1 = "/static/images/play/prev-icon.png";
-  const _imports_1$1 = "/static/images/play/next-icon.png";
+  const _imports_1$2 = "/static/images/play/next-icon.png";
   const _imports_2$1 = "/static/images/play/list-icon.png";
-  const _sfc_main$3 = {
+  const _sfc_main$4 = {
     __name: "test",
     setup(__props) {
       let playMode = vue.ref("list");
@@ -992,24 +992,28 @@ if (uni.restoreGlobal) {
         return index.data !== null ? parseInt(index.data) : 0;
       }
       songIndex.value = getSongIndex();
-      vue.watch(songIndex, (newIndex) => {
-        uni.setStorageSync("songIndex", newIndex);
-      }, { immediate: true });
+      vue.watch(
+        songIndex,
+        (newIndex) => {
+          uni.setStorageSync("songIndex", newIndex);
+        },
+        { immediate: true }
+      );
       vue.onMounted(() => {
-        formatAppLog("log", "at pages/test/test.vue:133", "songList", songList.value);
+        formatAppLog("log", "at pages/test/test.vue:171", "songList", songList.value);
         songIndex.value = JSON.parse(uni.getStorageSync("songIndex")) || 0;
         if (uni.getStorageSync("songIndex"))
           playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
         context.value = uni.createInnerAudioContext();
         setAndSrc(songIndex.value);
         playStatus.value = context.value.paused;
-        formatAppLog("log", "at pages/test/test.vue:148", "当前歌曲", context.value);
+        formatAppLog("log", "at pages/test/test.vue:182", "当前歌曲", context.value);
         context.value.onCanplay(() => {
           duration.value = context.value.duration;
         });
         context.value.onError((res) => {
-          formatAppLog("log", "at pages/test/test.vue:157", res.errMsg);
-          formatAppLog("log", "at pages/test/test.vue:158", res.errCode);
+          formatAppLog("log", "at pages/test/test.vue:191", res.errMsg);
+          formatAppLog("log", "at pages/test/test.vue:192", res.errCode);
         });
         context.value.onTimeUpdate(() => {
           currentTime.value = context.value.currentTime;
@@ -1045,12 +1049,12 @@ if (uni.restoreGlobal) {
         context.value.onEnded(() => {
           if (playMode.value === "single") {
             context.value.seek(0);
-            context.value.play();
+            playMusic();
           } else if (playMode.value === "random") {
             songIndex.value = Math.floor(Math.random() * songList.value.length);
             setAndSrc(songIndex.value);
             context.value.seek(0);
-            context.value.play();
+            playMusic();
           } else {
             changeSong("next");
           }
@@ -1061,12 +1065,13 @@ if (uni.restoreGlobal) {
           context.value.pause();
           playStatusMode.value = "stop";
         } else {
-          context.value.play();
+          playMusic();
           playStatusMode.value = "play";
         }
       }
       const changeSong = (type, index) => {
-        formatAppLog("log", "at pages/test/test.vue:242", "index", index);
+        formatAppLog("log", "at pages/test/test.vue:276", "type", type);
+        formatAppLog("log", "at pages/test/test.vue:277", "index", index);
         if (type === "prev") {
           if (songIndex.value === 0) {
             songIndex.value = songList.value.length - 1;
@@ -1084,6 +1089,7 @@ if (uni.restoreGlobal) {
           setAndSrc(songIndex.value);
           onPlay();
         } else {
+          songIndex.value = index;
           setAndSrc(index);
           onPlay();
         }
@@ -1103,6 +1109,18 @@ if (uni.restoreGlobal) {
         const value = e.detail.value;
         context.value.seek(value);
       };
+      function playMusic() {
+        formatAppLog("log", "at pages/test/test.vue:332", "context.value.duration", context.value.duration);
+        if (!context.value.duration) {
+          uni.showToast({
+            title: "该歌曲暂不支持播放",
+            icon: "none"
+          });
+          context.value.duration == null ? changeSong("next") : 0;
+        } else {
+          context.value.play();
+        }
+      }
       vue.onUnmounted(() => {
         context.value.destroy();
       });
@@ -1112,7 +1130,7 @@ if (uni.restoreGlobal) {
           null,
           [
             vue.createElementVNode("view", { style: { "width": "80%", "height": "80%", "margin": "auto", "padding": "10% 0" } }, [
-              vue.createElementVNode("view", null, [
+              vue.createElementVNode("view", { style: { "width": "600rpx", "height": "600rpx" } }, [
                 vue.createElementVNode("img", {
                   style: { "width": "100%", "border-radius": "6%" },
                   src: songList.value[vue.unref(songIndex)].pic
@@ -1143,9 +1161,9 @@ if (uni.restoreGlobal) {
                     max: vue.unref(duration),
                     value: vue.unref(currentTime),
                     onChange: sliderChange,
-                    activeColor: "#FFCC33",
+                    activeColor: "#000",
                     backgroundColor: "#ccc",
-                    "block-color": "#8A6DE9",
+                    "block-color": "#000",
                     "block-size": "12",
                     style: { "margin": "0" }
                   }, null, 40, ["max", "value"])
@@ -1198,7 +1216,7 @@ if (uni.restoreGlobal) {
                   onClick: _cache[1] || (_cache[1] = ($event) => changeSong("next"))
                 }, [
                   vue.createElementVNode("image", {
-                    src: _imports_1$1,
+                    src: _imports_1$2,
                     mode: ""
                   })
                 ]),
@@ -1242,7 +1260,7 @@ if (uni.restoreGlobal) {
                             vue.createElementVNode(
                               "view",
                               {
-                                class: vue.normalizeClass({ "currentIndex": index === vue.unref(songIndex) }),
+                                class: vue.normalizeClass({ currentIndex: index === vue.unref(songIndex) }),
                                 style: { "display": "flex", "align-items": "center", "width": "80%", "white-space": "nowrap" }
                               },
                               [
@@ -1256,7 +1274,7 @@ if (uni.restoreGlobal) {
                                 vue.createElementVNode(
                                   "view",
                                   {
-                                    class: vue.normalizeClass([{ "currentIndex": index === vue.unref(songIndex) }, "popup-content-sing"])
+                                    class: vue.normalizeClass([{ currentIndex: index === vue.unref(songIndex) }, "popup-content-sing"])
                                   },
                                   vue.toDisplayString(" - " + song.sing),
                                   3
@@ -1266,11 +1284,11 @@ if (uni.restoreGlobal) {
                               2
                               /* CLASS */
                             ),
-                            vue.createElementVNode("view", { style: { "color": "rgba(51, 51, 51,0.8)", "display": "flex", "align-items": "center" } }, [
+                            vue.createElementVNode("view", { style: { "color": "rgba(51, 51, 51, 0.8)", "display": "flex", "align-items": "center" } }, [
                               vue.createElementVNode(
                                 "view",
                                 {
-                                  class: vue.normalizeClass({ "currentIndex": index === vue.unref(songIndex) }),
+                                  class: vue.normalizeClass({ currentIndex: index === vue.unref(songIndex) }),
                                   style: { "margin": "20rpx" }
                                 },
                                 "xxx",
@@ -1304,24 +1322,84 @@ if (uni.restoreGlobal) {
       };
     }
   };
-  const PagesTestTest = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["__file", "D:/A-test/github/music-app/pages/test/test.vue"]]);
+  const PagesTestTest = /* @__PURE__ */ _export_sfc(_sfc_main$4, [["__file", "D:/A-test/github/music-app/pages/test/test.vue"]]);
   const _imports_0 = "/static/tabs/back.png";
-  const _imports_1 = "/static/tabs/menu.png";
+  const _imports_1$1 = "/static/tabs/menu.png";
   const _imports_2 = "/static/tabs/view.png";
   const _imports_3 = "/static/tabs/sort.png";
   const _imports_4 = "/static/tabs/multiple.png";
+  const _imports_1 = "/static/images/play/play-icon.png";
+  const _sfc_main$3 = {};
+  function _sfc_render(_ctx, _cache) {
+    return vue.openBlock(), vue.createElementBlock("view", { class: "player" }, [
+      vue.createElementVNode("view", { class: "player-left" }, [
+        vue.createElementVNode("image", {
+          src: _imports_0$2,
+          style: { "width": "80rpx", "height": "80rpx" }
+        }),
+        vue.createElementVNode("view", { class: "player-left-content" }, [
+          vue.createTextVNode(" 你 - 薛之谦 "),
+          vue.createCommentVNode(' <view class="player-left-content-title">你</view>\r\n        <view class="player-left-content-song">薛之谦</view> ')
+        ])
+      ]),
+      vue.createElementVNode("view", { class: "player-right" }, [
+        vue.createElementVNode("image", {
+          src: _imports_1,
+          style: { "width": "50rpx", "height": "50rpx" }
+        }),
+        vue.createElementVNode("image", {
+          src: _imports_2$1,
+          style: { "width": "50rpx", "height": "50rpx", "margin-left": "20rpx" }
+        })
+      ])
+    ]);
+  }
+  const playerVue = /* @__PURE__ */ _export_sfc(_sfc_main$3, [["render", _sfc_render], ["__scopeId", "data-v-dd16a17b"], ["__file", "D:/A-test/github/music-app/components/playerVue/playerVue.vue"]]);
   const _sfc_main$2 = {
     __name: "local",
     setup(__props) {
       const isPopupVisible = vue.ref(false);
       const audioList = vue.ref([]);
+      const context = vue.ref(null);
       vue.onMounted(() => {
-        formatAppLog("log", "at pages/my/local/local.vue:134", "666", JSON.parse(uni.getStorageSync("audio-list")));
-        audioList.value = JSON.parse(uni.getStorageSync("audio-list"));
-        formatAppLog("log", "at pages/my/local/local.vue:137", "audioList.value", audioList.value);
+        formatAppLog("log", "at pages/my/local/local.vue:126", "onMounted", JSON.parse(uni.getStorageSync("audio-list")));
+        audioList.value = JSON.parse(uni.getStorageSync("audio-list")).map((item) => {
+          return {
+            id: item.id,
+            sing: item.title,
+            song: item.artist,
+            url: item.path,
+            autoplay: false,
+            // 是否自动播放
+            currentTime: 0,
+            // 当前播放时间
+            paused: false
+            // 是否暂停
+          };
+        });
+        formatAppLog("log", "at pages/my/local/local.vue:138", "audioList.value", audioList.value);
+        context.value = uni.createInnerAudioContext();
+        context.value.src = audioList.value[0].url;
+        formatAppLog("log", "at pages/my/local/local.vue:141", "context.value", context.value);
+        context.value.play();
+        context.value.onPlay(() => {
+          formatAppLog("log", "at pages/my/local/local.vue:145", "开始播放");
+        });
+        context.value.onError((res) => {
+          formatAppLog("log", "at pages/my/local/local.vue:148", res);
+        });
+        context.value.onEnded(() => {
+          formatAppLog("log", "at pages/my/local/local.vue:151", "播放结束");
+        });
       });
       function onRightButtonClick() {
         isPopupVisible.value = !isPopupVisible.value;
+      }
+      function goScan() {
+        uni.navigateTo({
+          url: "/pages/my/local/scan/scan"
+        });
+        isPopupVisible.value = false;
       }
       return (_ctx, _cache) => {
         return vue.openBlock(), vue.createElementBlock(
@@ -1333,15 +1411,15 @@ if (uni.restoreGlobal) {
                 vue.createElementVNode("view", {
                   onClick: _cache[0] || (_cache[0] = ($event) => _ctx.$router.back())
                 }, [
-                  vue.createElementVNode("img", {
+                  vue.createElementVNode("image", {
                     src: _imports_0,
-                    style: { "width": "48rpx" }
+                    style: { "width": "48rpx", "height": "48rpx" }
                   })
                 ]),
                 vue.createElementVNode("view", { class: "title" }, "页面标题"),
                 vue.createElementVNode("view", null, [
-                  vue.createElementVNode("img", {
-                    src: _imports_1,
+                  vue.createElementVNode("image", {
+                    src: _imports_1$1,
                     class: "menu",
                     onClick: onRightButtonClick
                   })
@@ -1349,42 +1427,6 @@ if (uni.restoreGlobal) {
               ])
             ]),
             vue.createCommentVNode(" 排序 "),
-            (vue.openBlock(true), vue.createElementBlock(
-              vue.Fragment,
-              null,
-              vue.renderList(audioList.value, (item) => {
-                return vue.openBlock(), vue.createElementBlock("view", {
-                  class: "",
-                  key: item.id
-                }, [
-                  vue.createElementVNode(
-                    "view",
-                    { class: "" },
-                    " 歌曲名：" + vue.toDisplayString(item.title),
-                    1
-                    /* TEXT */
-                  ),
-                  vue.createElementVNode("br"),
-                  vue.createElementVNode(
-                    "view",
-                    { class: "" },
-                    " 歌手名：" + vue.toDisplayString(item.artist),
-                    1
-                    /* TEXT */
-                  ),
-                  vue.createElementVNode("br"),
-                  vue.createElementVNode(
-                    "view",
-                    { class: "" },
-                    " 路径：" + vue.toDisplayString(item.path),
-                    1
-                    /* TEXT */
-                  )
-                ]);
-              }),
-              128
-              /* KEYED_FRAGMENT */
-            )),
             vue.createElementVNode("view", {
               class: "",
               style: { "display": "flex", "justify-content": "space-between", "align-items": "center", "padding": "20rpx 40rpx", "margin-top": "32rpx" }
@@ -1400,33 +1442,48 @@ if (uni.restoreGlobal) {
                 class: "",
                 style: { "display": "flex", "width": "120rpx", "justify-content": "space-between", "align-items": "center" }
               }, [
-                vue.createElementVNode("img", {
+                vue.createElementVNode("image", {
                   src: _imports_2,
                   style: { "width": "28rpx", "height": "28rpx" }
                 }),
-                vue.createElementVNode("img", {
+                vue.createElementVNode("image", {
                   src: _imports_3,
                   style: { "width": "38rpx", "height": "40rpx" }
                 }),
-                vue.createElementVNode("img", {
+                vue.createElementVNode("image", {
                   src: _imports_4,
                   style: { "width": "28rpx", "height": "28rpx" }
                 })
               ])
             ]),
             vue.createCommentVNode(" 列表 "),
-            (vue.openBlock(), vue.createElementBlock(
+            (vue.openBlock(true), vue.createElementBlock(
               vue.Fragment,
               null,
-              vue.renderList(14, (item) => {
-                return vue.createElementVNode("view", { style: { "display": "flex", "justify-content": "space-between", "align-items": "center", "padding": "20rpx 40rpx" } }, [
+              vue.renderList(audioList.value, (item) => {
+                return vue.openBlock(), vue.createElementBlock("view", {
+                  style: { "display": "flex", "justify-content": "space-between", "align-items": "center", "padding": "20rpx 40rpx" },
+                  key: item.id
+                }, [
                   vue.createElementVNode("view", { class: "" }, [
-                    vue.createElementVNode("view", { class: "" }, " 歌名 "),
+                    vue.createElementVNode(
+                      "view",
+                      { class: "" },
+                      vue.toDisplayString(item.sing),
+                      1
+                      /* TEXT */
+                    ),
                     vue.createElementVNode("view", {
                       class: "",
                       style: { "font-size": "24rpx", "color": "rgb(102, 102, 102, 0.9)", "display": "flex", "align-items": "center" }
                     }, [
-                      vue.createElementVNode("span", null, "歌手名"),
+                      vue.createElementVNode(
+                        "span",
+                        null,
+                        vue.toDisplayString(item.song),
+                        1
+                        /* TEXT */
+                      ),
                       vue.createElementVNode("view", { style: { "padding": "2px", "background": "#eee", "margin-left": "2px" } }, "6")
                     ])
                   ]),
@@ -1440,8 +1497,8 @@ if (uni.restoreGlobal) {
                   ])
                 ]);
               }),
-              64
-              /* STABLE_FRAGMENT */
+              128
+              /* KEYED_FRAGMENT */
             )),
             vue.createCommentVNode(" 模块 "),
             vue.createElementVNode(
@@ -1453,10 +1510,11 @@ if (uni.restoreGlobal) {
               [
                 vue.createElementVNode("view", { class: "setting-popup-content" }, [
                   vue.createCommentVNode(' <view class="setting-popup-item">设置</view> '),
-                  vue.createCommentVNode(' <view class="setting-popup-item" @click="">扫描歌曲</view> '),
-                  vue.createElementVNode("navigator", { url: "/pages/my/local/scan/scan" }, [
-                    vue.createElementVNode("view", null, "扫描歌曲")
-                  ])
+                  vue.createElementVNode("view", {
+                    class: "setting-popup-item",
+                    onClick: goScan
+                  }, "扫描歌曲"),
+                  vue.createCommentVNode(' <navigator url="/pages/my/local/scan/scan">\n        <view>扫描歌曲</view>\n      </navigator> ')
                 ])
               ],
               4
@@ -1468,7 +1526,8 @@ if (uni.restoreGlobal) {
 	<uni-popup ref="popup" background-color="#fff" @change="change">
 				<view class="popup-content" :class="{ 'popup-height': type === 'left' || type === 'right' }"><text
 						class="text">popup 内容</text></view>
-			</uni-popup> `)
+			</uni-popup> `),
+            vue.createVNode(vue.unref(playerVue))
           ],
           64
           /* STABLE_FRAGMENT */
@@ -1504,19 +1563,28 @@ if (uni.restoreGlobal) {
               const path = cursor.getString(
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
               );
+              const retriever = new MediaMetadataRetriever();
+              retriever.setDataSource(path);
+              const duration = retriever.extractMetadata(
+                MediaMetadataRetriever.METADATA_KEY_DURATION
+              );
+              const durationInSeconds = parseInt(duration, 10) / 1e3;
               let info = cursor.getString(
                 cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
               );
-              formatAppLog("log", "at pages/my/local/scan/scan.vue:62", "id, title, artist, path", id, title2, artist, path);
-              audioList.value.push({ id, title: title2, artist, path });
+              audioList.value.push({
+                id,
+                title: title2,
+                artist,
+                path,
+                duration: durationInSeconds
+              });
               infoArr.value.push(info);
             } while (cursor.moveToNext());
           }
           cursor.close();
-          formatAppLog("log", "at pages/my/local/scan/scan.vue:73", "audioList", audioList.value);
-          formatAppLog("log", "at pages/my/local/scan/scan.vue:74", "infoArr", infoArr.value);
           uni.setStorageSync("audio-list", JSON.stringify(audioList.value));
-          uni.setStorageSync("audio-list", JSON.stringify(infoArr.value));
+          uni.setStorageSync("info-arr", JSON.stringify(infoArr.value));
         }
       }
       plus.android.importClass("android.content.Context");
@@ -1526,6 +1594,9 @@ if (uni.restoreGlobal) {
       plus.android.importClass("android.net.Uri");
       const MediaStore = plus.android.importClass("android.provider.MediaStore");
       plus.android.importClass("android.database.Cursor");
+      const MediaMetadataRetriever = plus.android.importClass(
+        "android.media.MediaMetadataRetriever"
+      );
       const main = plus.android.runtimeMainActivity();
       const contentResolver = main.getContentResolver();
       const uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;

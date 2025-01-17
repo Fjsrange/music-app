@@ -55,14 +55,29 @@ function startScan() {
         const path = cursor.getString(
           cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
         );
+        // 创建MediaMetadataRetriever实例
+        const retriever = new MediaMetadataRetriever();
+        // 设置数据源
+        retriever.setDataSource(path);
+        // 获取时长（单位为毫秒）
+        const duration = retriever.extractMetadata(
+          MediaMetadataRetriever.METADATA_KEY_DURATION
+        );
+        // 转换时长为秒
+        const durationInSeconds = parseInt(duration, 10) / 1000;
 
         let info = cursor.getString(
           cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
         );
-        console.log("id, title, artist, path", id, title, artist, path);
 
         // 将音频信息添加到音频列表中
-        audioList.value.push({ id, title, artist, path });
+        audioList.value.push({
+          id,
+          title,
+          artist,
+          path,
+          duration: durationInSeconds,
+        });
         infoArr.value.push(info);
       } while (cursor.moveToNext());
     }
@@ -70,10 +85,8 @@ function startScan() {
     cursor.close();
 
     // audioList 包含了手机中所有音频文件的信息
-    console.log("audioList", audioList.value);
-    console.log("infoArr", infoArr.value);
     uni.setStorageSync("audio-list", JSON.stringify(audioList.value));
-    uni.setStorageSync("audio-list", JSON.stringify(infoArr.value));
+    uni.setStorageSync("info-arr", JSON.stringify(infoArr.value));
   }
 }
 
@@ -89,6 +102,10 @@ const Uri = plus.android.importClass("android.net.Uri");
 const MediaStore = plus.android.importClass("android.provider.MediaStore");
 // 导入android.database.Cursor类
 const Cursor = plus.android.importClass("android.database.Cursor");
+// 导入android.media.MediaMetadataRetriever类
+const MediaMetadataRetriever = plus.android.importClass(
+  "android.media.MediaMetadataRetriever"
+);
 // 获取主Activity
 const main = plus.android.runtimeMainActivity();
 // 获取ContentResolver对象

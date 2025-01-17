@@ -12,10 +12,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 /*每个页面公共css */
 body {
   padding: 0;
   margin: 0;
+  /* background: -var($bgColor); */
+  background: $bgColor;
 }
 </style>

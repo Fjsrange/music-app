@@ -2,11 +2,14 @@
   <header>
     <view class="navbar">
       <view @click="$router.back()">
-        <img src="/static/tabs/back.png" style="width: 48rpx" />
+        <image
+          src="/static/tabs/back.png"
+          style="width: 48rpx; height: 48rpx"
+        />
       </view>
       <view class="title">页面标题</view>
       <view>
-        <img
+        <image
           src="/static/tabs/menu.png"
           class="menu"
           @click="onRightButtonClick"
@@ -16,13 +19,6 @@
   </header>
 
   <!-- 排序 -->
-  <view class="" v-for="item in audioList" :key="item.id">
-    <view class=""> 歌曲名：{{ item.title }} </view>
-    <br />
-    <view class=""> 歌手名：{{ item.artist }} </view>
-    <br />
-    <view class=""> 路径：{{ item.path }} </view>
-  </view>
   <view
     class=""
     style="
@@ -46,9 +42,9 @@
         align-items: center;
       "
     >
-      <img src="/static/tabs/view.png" style="width: 28rpx; height: 28rpx" />
-      <img src="/static/tabs/sort.png" style="width: 38rpx; height: 40rpx" />
-      <img
+      <image src="/static/tabs/view.png" style="width: 28rpx; height: 28rpx" />
+      <image src="/static/tabs/sort.png" style="width: 38rpx; height: 40rpx" />
+      <image
         src="/static/tabs/multiple.png"
         style="width: 28rpx; height: 28rpx"
       />
@@ -63,10 +59,11 @@
       align-items: center;
       padding: 20rpx 40rpx;
     "
-    v-for="item in 14"
+    v-for="item in audioList"
+    :key="item.id"
   >
     <view class="">
-      <view class=""> 歌名 </view>
+      <view class=""> {{ item.sing }} </view>
       <view
         class=""
         style="
@@ -76,7 +73,7 @@
           align-items: center;
         "
       >
-        <span>歌手名</span>
+        <span>{{ item.song }}</span>
         <view style="padding: 2px; background: #eee; margin-left: 2px">6</view>
       </view>
     </view>
@@ -112,29 +109,47 @@
 				<view class="popup-content" :class="{ 'popup-height': type === 'left' || type === 'right' }"><text
 						class="text">popup 内容</text></view>
 			</uni-popup> -->
+
+  <playerVue></playerVue>
 </template>
 
 <script setup>
 import { ref, onMounted } from "vue";
+import playerVue from "../../../components/playerVue/playerVue";
 
 const isPopupVisible = ref(false); // 控制弹窗显示与隐藏
 const audioList = ref([]); // 本地音频列表
+const context = ref(null); // 音频上下文
 
 onMounted(() => {
   // 获取本地音频列表
-  // uni.getStorageSync({
-  //   key: "audioList",
-  //   success: function (res) {
-  //     console.log(res);
-
-  //     audioList.value = res.data;
-  //     console.log("audioList.value", audioList.value);
-  //   },
-  // });
-  console.log("666", JSON.parse(uni.getStorageSync("audio-list")));
-
-  audioList.value = JSON.parse(uni.getStorageSync("audio-list"));
+  console.log("onMounted", JSON.parse(uni.getStorageSync("audio-list")));
+  audioList.value = JSON.parse(uni.getStorageSync("audio-list")).map((item) => {
+    return {
+      id: item.id,
+      sing: item.title,
+      song: item.artist,
+      url: item.path,
+      autoplay: false, // 是否自动播放
+      currentTime: 0, // 当前播放时间
+      paused: false, // 是否暂停
+    };
+  });
   console.log("audioList.value", audioList.value);
+  context.value = uni.createInnerAudioContext();
+  context.value.src = audioList.value[0].url;
+  console.log("context.value", context.value);
+  context.value.play();
+
+  context.value.onPlay(() => {
+    console.log("开始播放");
+  });
+  context.value.onError((res) => {
+    console.log(res);
+  });
+  context.value.onEnded(() => {
+    console.log("播放结束");
+  });
 });
 
 // 点击设置按钮
@@ -174,6 +189,7 @@ header {
 .menu {
   margin-right: 6rpx;
   width: 48rpx;
+  height: 48rpx;
 }
 
 .setting-popup {
