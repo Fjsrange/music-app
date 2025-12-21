@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
   <!-- <searchVue></searchVue> -->
   <!-- <uni-nav-bar>
     <view>标题栏</view>
@@ -26,6 +27,9 @@
       <uni-icons type="settings" size="28" @click="toSetting"></uni-icons>
     </view>
   </view>
+=======
+  <searchVue></searchVue>
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 
   <view class="my-card">
     <view class="card-msg">
@@ -35,6 +39,7 @@
   </view>
 
   <view class="card-tab">
+<<<<<<< HEAD
     <view class="tab" v-for="item in 4">
       <image
         src="../../static/logo.png"
@@ -43,6 +48,12 @@
       ></image>
       <span>喜欢</span>
       <span>188</span>
+=======
+    <view class="tab" v-for="item in cardTabList" @click="goTab(item.url)">
+      <image :src="item.icon" mode="" style="width: 40px; height: 40px"></image>
+      <span>{{ item.title }}</span>
+      <span>{{ item.sum }}</span>
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
     </view>
   </view>
 
@@ -76,9 +87,28 @@
 <script setup>
 import { ref } from "vue";
 import searchVue from "@/components/searchVue/searchVue.vue";
+<<<<<<< HEAD
+=======
+import { tabList } from "./tabList.js";
+
+console.log("tabList", tabList);
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 
 const songList = ref([]); // 歌单
+let cardTabList = ref(tabList); // tab
 
+let timestamp = Date.now();
+let date = new Date(timestamp);
+// console.log(date.toLocaleDateString()); // 输出类似于 "12/8/2024"
+
+// let year = date.getFullYear();
+// let month = String(date.getMonth() + 1).padStart(2, '0'); // 月份是从0开始的
+// let day = String(date.getDate()).padStart(2, '0');
+// let hours = String(date.getHours()).padStart(2, '0');
+// let minutes = String(date.getMinutes()).padStart(2, '0');
+// let seconds = String(date.getSeconds()).padStart(2, '0');
+
+<<<<<<< HEAD
 let timestamp = Date.now();
 let date = new Date(timestamp);
 // console.log(date.toLocaleDateString()); // 输出类似于 "12/8/2024"
@@ -96,11 +126,23 @@ let date = new Date(timestamp);
 function toSetting() {
   uni.navigateTo({
     url: "/pages/setting/setting",
+=======
+// console.log(`${year}-${month}-${day} ${hours}:${minutes}:${seconds}`); // 输出类似于 "2024-12-08 12:00:00"
+
+/**
+ * 跳转
+ * @params url
+ */
+function goTab(url) {
+  uni.navigateTo({
+    url: url,
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   });
 }
 </script>
 
 <style lang="scss">
+<<<<<<< HEAD
 .top-tab {
   display: flex;
   justify-content: space-between;
@@ -117,6 +159,11 @@ function toSetting() {
 }
 .my-card {
   padding: 20rpx;
+=======
+.my-card {
+  padding: 20rpx;
+  margin: 40rpx;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   height: 200rpx;
   border: 2rpx solid #333;
   border-radius: 20rpx;
@@ -137,7 +184,11 @@ function toSetting() {
   height: 100rpx;
 }
 .card-tab {
+<<<<<<< HEAD
   margin: 40rpx 0;
+=======
+  margin: 40rpx;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -154,6 +205,10 @@ function toSetting() {
   }
 }
 .my-song {
+<<<<<<< HEAD
+=======
+  margin: 40rpx;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   .song-title {
     padding: 20rpx 0;
   }

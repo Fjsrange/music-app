@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 .search {
 	border: 0.0625rem solid #ccc;
 	margin: 0.625rem 1.25rem;
@@ -250,4 +251,35 @@
 .music-player .player-controls .play-btn {
   font-size: 1.25rem;
   color: #000;
+=======
+.search {
+	border: 0.0625rem solid #ccc;
+	margin: 0.625rem 1.25rem;
+	border-radius: 1.25rem;
+	padding: 0.3125rem 0.625rem;
+}
+
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.logo {
+  height: 6.25rem;
+  width: 6.25rem;
+  margin-top: 6.25rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5625rem;
+}
+.text-area {
+  display: flex;
+  justify-content: center;
+}
+.title {
+  font-size: 1.125rem;
+  color: #8f8f94;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * 这里是uni-app内置的常用样式变量
  *
@@ -535,6 +536,13 @@
 	border: 0.0625rem solid #ccc;
 	margin: 0.625rem 1.25rem;
 	border-radius: 1.25rem;
+=======
+
+.search {
+	border: 0.0625rem solid #ccc;
+	margin: 0.625rem 1.25rem;
+	border-radius: 1.25rem;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 	padding: 0.3125rem 0.625rem;
 }
 
@@ -550,6 +558,10 @@
  *
  * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
  */
+<<<<<<< HEAD
+=======
+/** 背景色 */
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 /* 颜色变量 */
 /* 行为相关颜色 */
 /* 文字基本颜色 */
@@ -563,6 +575,7 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
+<<<<<<< HEAD
 .top-tab {
   display: flex;
   justify-content: space-between;
@@ -576,6 +589,11 @@
 }
 .my-card {
   padding: 0.625rem;
+=======
+.my-card {
+  padding: 0.625rem;
+  margin: 1.25rem;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   height: 6.25rem;
   border: 0.0625rem solid #333;
   border-radius: 0.625rem;
@@ -592,7 +610,11 @@
   height: 3.125rem;
 }
 .card-tab {
+<<<<<<< HEAD
   margin: 1.25rem 0;
+=======
+  margin: 1.25rem;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -608,6 +630,12 @@
   justify-content: center;
   align-items: center;
 }
+<<<<<<< HEAD
+=======
+.my-song {
+  margin: 1.25rem;
+}
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 .my-song .song-title {
   padding: 0.625rem 0;
 }

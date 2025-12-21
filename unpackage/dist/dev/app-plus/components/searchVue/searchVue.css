@@ -1,7 +1,14 @@
 
+<<<<<<< HEAD
 .search {
 	border: 0.0625rem solid #ccc;
 	margin: 0.625rem 1.25rem;
 	border-radius: 1.25rem;
+=======
+.search {
+	border: 0.0625rem solid #ccc;
+	margin: 0.625rem 1.25rem;
+	border-radius: 1.25rem;
+>>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 	padding: 0.3125rem 0.625rem;
 }
