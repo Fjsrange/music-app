@@ -1,17 +1,21 @@
 <template>
-  <view style="width: 80%;
+  <view style="width: 90%;
       height: 80%;
       margin: auto;
-      padding: 10% 0;">
+      padding: 0 0 10% 0;">
     <view>
       <img style="width: 100%;border-radius: 6%;"
-        :src="songList[songIndex].pic"
+        :src="songList[songIndex]?.pic"
       ></img>
     </view>
     <view style="padding-top: 40rpx;line-height: 2;">
-      <view style="font-size: 40rpx;font-weight: bold;">{{songList[songIndex].sing}}</view>
-      <view>{{songList[songIndex].song}}</view>
-      <view>歌词</view>
+      <view style="font-size: 40rpx;font-weight: bold;">{{songList[songIndex]?.sing}}</view>
+      <view>{{songList[songIndex]?.song}}</view>
+      <view class="lyrics-container" ref="lyricsContainerRef" :style="{ height: lyricsContainerHeight + 'rpx' }" style="margin-top: 20rpx">
+        <view v-for="(line, index) in formatLyrics(context.lyrics)" :key="index" :class="{ 'current-line': index === currentLyricIndex }">
+          {{ line }}
+        </view>
+      </view>
     </view>
   </view>
 
@@ -101,17 +105,32 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
+// import lyrics from "../../assets/lyrics.js";
+// import { lyrics } from "../../assets/lyrics.js";
+import lyrics from '@/assets/lyrics/lyrics.js'
 
+console.log('lyrics', lyrics);
+
+// 歌词相关
+const lyricsContainerHeight = ref(300); // 歌词容器高度，默认300rpx
+const currentLyricIndex = ref(0); // 当前高亮的歌词行
+const displayedLyrics = ref([]); // 实际显示的歌词
+// 音频相关
 let playMode = ref("list"); // 听歌模式 顺序播放，单曲循环，随机播放
 let context = ref({}); // 当前音频
 // 音频信息
 let duration = ref(-1); // 当前音频总时常
 let currentTime = ref(0); // 当前音频播放的位置
 const songList = ref(JSON.parse(uni.getStorageSync("movies"))); // 获取音乐列表
+// let arr = songList.value.map(item =>{
+//   return `('${item.pic}', '${item.sing}', '${item.song}', '${item.url}');`;
+// });
+// console.log('arr', arr);
+
 let songIndex = ref(0); // 当前播放歌曲的索引
 let playStatus = ref(false); // 播放状态 true 暂停 false 播放
 let playStatusMode = ref('stop'); // 播放状态icon
-let isPopupShow = ref(true); // 是否显示播放列表
+let isPopupShow = ref(false); // 是否显示播放列表
 
 /**
  * 从本地存储中获取当前歌曲索引
@@ -119,22 +138,22 @@ let isPopupShow = ref(true); // 是否显示播放列表
  */
 function getSongIndex() {
   const index = uni.getStorageSync('songIndex');
-  return index !== null ? parseInt(index) : 0;
+  const parsedIndex = parseInt(index);
+  return isNaN(parsedIndex) ? 0 : parsedIndex;
 }
 // 初始化 songIndex 的值
 songIndex.value = getSongIndex();
 // 监听 songIndex 的变化，并保存到本地存储
 watch(songIndex, (newIndex)=>{
   uni.setStorageSync("songIndex", newIndex);
-}, { immediate: true }); // 立即执行一次，以便初始化时也保存索引
+});
 
 onMounted(() => {
-  // 获取音乐列表
-  console.log('songList',songList.value);
-  songIndex.value = JSON.parse(uni.getStorageSync("songIndex")) || 0;
-
+  console.log('进入页面');
+  // 获取当前歌曲索引
+  songIndex.value = getSongIndex();
   // 获取音频播放状态
-  playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
+  playMode.value = uni.getStorageSync("playMode") || "list";
   // 创建音频上下文
   context.value = uni.createInnerAudioContext();
   // context.value.autoplay = true; // 进入页面播放
@@ -166,7 +185,19 @@ onMounted(() => {
  * @param index 当前播放歌曲的索引
  */
 function setAndSrc(index){
-  context.value.src = songList.value[index].url;
+  songIndex.value = index;
+  context.value.src = songList.value[songIndex.value].url;
+  // 查找匹配的歌词
+  const currentLyrics = lyrics.find(item => item.pid == songList.value[songIndex.value].id);
+  context.value.lyrics = currentLyrics ? currentLyrics.lyrics : '无歌词';
+}
+// 格式化歌词
+function formatLyrics(lyricsText) {
+  if (!lyricsText || lyricsText === '无歌词') {
+    return ['暂无歌词'];
+  }
+  // 根据逗号分割歌词
+  return lyricsText.split(',');
 }
 /**
  * @params 播放模式
@@ -194,7 +225,7 @@ function setAndSrc(index){
       icon: "success",
     });
   }
-  uni.setStorageSync("playMode", JSON.stringify(playMode.value));
+  uni.setStorageSync("playMode", playMode.value);
 };
 /**
  * 切换播放模式
@@ -234,8 +265,6 @@ function onPlay(){
  * @params type 上一首，下一首
  */
  const changeSong = (type, index) => {
-  console.log('index', index);
-  
   // 上一首
   if (type === "prev") {
     if (songIndex.value === 0) {
