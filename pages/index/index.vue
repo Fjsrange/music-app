@@ -1,4 +1,6 @@
 <template>
+  <Header title="" :background-color="backgroundColor" :font-color="fontColor" :fixed="fixed">
+  </Header>
   <!-- 本周精选 -->
   <view class="week-recommend">
     <!-- 背景图 -->
@@ -141,7 +143,11 @@
 import { ref } from "vue";
 import searchVue from "@/components/searchVue/searchVue.vue";
 import getMovies from "../../api/movies.json";
+import Header from "@/components/Header/Header.vue";
 
+const backgroundColor = ref("#f8f8f8");
+const fontColor = ref("#333");
+const fixed = ref(true);
 const title = "hello";
 const currentTime = ref(0);
 const duration = ref(100); // 歌曲时长
@@ -151,6 +157,23 @@ const isActivityActive = ref(false); // 活动
 
 uni.setStorageSync("movies", JSON.stringify(getMovies.data));
 
+// 页面滚动监听函数（uni-app 自动调用）
+const onPageScroll = (e) => {
+  if (e.scrollTop < 5) {
+    // 顶部附近 - 白色字体，透明背景
+    fontColor.value = '#fff';
+    backgroundColor.value = 'transparent';
+  } else if (e.scrollTop < 50) {
+    // 滚动中间过程 - 渐变效果
+    const rate = e.scrollTop / 50;
+    backgroundColor.value = `rgba(248, 248, 248, ${rate})`;
+    fontColor.value = `rgba(51, 51, 51, ${rate})`;
+  } else {
+    // 滚动较多 - 完全不透明背景，黑色字体
+    backgroundColor.value = 'rgba(248, 248, 248, 1)';
+    fontColor.value = 'rgba(51, 51, 51, 1)';
+  }
+}
 function handleTouchStart(type) {
   console.log("开始触摸");
   if (type === "isCustomActive") {
@@ -185,7 +208,8 @@ const togglePlay = () => {
   border-radius: 32rpx;
   overflow: hidden;
   box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 60rpx;
+  // margin-bottom: 60rpx;
+  margin: 120rpx 0 60rpx 0;
 
   .bg-image {
     width: 100%;

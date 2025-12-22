@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <view style="width: 90%;
       height: 80%;
       margin: auto;
@@ -7,17 +6,9 @@
     <view>
       <img style="width: 100%;border-radius: 6%;"
         :src="songList[songIndex]?.pic"
-=======
-  <view style="width: 80%; height: 80%; margin: auto; padding: 10% 0">
-    <view style="width: 600rpx;height: 600rpx;">
-      <img
-        style="width: 100%; border-radius: 6%"
-        :src="songList[songIndex].pic"
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
       ></img>
       
     </view>
-<<<<<<< HEAD
     <view style="padding-top: 40rpx;line-height: 2;">
       <view style="font-size: 40rpx;font-weight: bold;">{{songList[songIndex]?.sing}}</view>
       <view>{{songList[songIndex]?.song}}</view>
@@ -26,14 +17,6 @@
           {{ line }}
         </view>
       </view>
-=======
-    <view style="padding-top: 40rpx; line-height: 2">
-      <view style="font-size: 40rpx; font-weight: bold">{{
-        songList[songIndex].sing
-      }}</view>
-      <view>{{ songList[songIndex].song }}</view>
-      <view>歌词</view>
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
     </view>
   </view>
 
@@ -154,15 +137,10 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
 import { ref, onMounted, onUnmounted, watch } from "vue";
 // import lyrics from "../../assets/lyrics.js";
 // import { lyrics } from "../../assets/lyrics.js";
 import lyrics from '@/assets/lyrics/lyrics.js'
-=======
-import { ref, onMounted, onUnmounted, watch, computed } from "vue";
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
-
 console.log('lyrics', lyrics);
 
 // 歌词相关
@@ -183,13 +161,8 @@ const songList = ref(JSON.parse(uni.getStorageSync("movies"))); // 获取音乐�
 
 let songIndex = ref(0); // 当前播放歌曲的索引
 let playStatus = ref(false); // 播放状态 true 暂停 false 播放
-<<<<<<< HEAD
 let playStatusMode = ref('stop'); // 播放状态icon
 let isPopupShow = ref(false); // 是否显示播放列表
-=======
-let playStatusMode = ref("stop"); // 播放状态icon
-let isPopupShow = ref(true); // 是否显示播放列表
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 
 
 /**
@@ -197,19 +170,13 @@ let isPopupShow = ref(true); // 是否显示播放列表
  * @returns 当前歌曲索引 || 0
  */
 function getSongIndex() {
-<<<<<<< HEAD
   const index = uni.getStorageSync('songIndex');
   const parsedIndex = parseInt(index);
   return isNaN(parsedIndex) ? 0 : parsedIndex;
-=======
-  const index = uni.getStorageSync("songIndex");
-  return index.data !== null ? parseInt(index.data) : 0;
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 }
 // 初始化 songIndex 的值
 songIndex.value = getSongIndex();
 // 监听 songIndex 的变化，并保存到本地存储
-<<<<<<< HEAD
 watch(songIndex, (newIndex)=>{
   uni.setStorageSync("songIndex", newIndex);
 });
@@ -220,24 +187,6 @@ onMounted(() => {
   songIndex.value = getSongIndex();
   // 获取音频播放状态
   playMode.value = uni.getStorageSync("playMode") || "list";
-=======
-watch(
-  songIndex,
-  (newIndex) => {
-    uni.setStorageSync("songIndex", newIndex);
-  },
-  { immediate: true }
-); // 立即执行一次，以便初始化时也保存索引
-
-onMounted(() => {
-  // 获取音乐列表
-  console.log("songList", songList.value);
-  songIndex.value = JSON.parse(uni.getStorageSync("songIndex")) || 0;
-
-  // 获取音频播放状态
-  if (uni.getStorageSync("songIndex"))
-    playMode.value = JSON.parse(uni.getStorageSync("playMode")) || "list";
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   // 创建音频上下文
   context.value = uni.createInnerAudioContext();
   // context.value.autoplay = true; // 进入页面播放
@@ -267,7 +216,6 @@ onMounted(() => {
  * 根据索引获取音频地址
  * @param index 当前播放歌曲的索引
  */
-<<<<<<< HEAD
 function setAndSrc(index){
   songIndex.value = index;
   context.value.src = songList.value[songIndex.value].url;
@@ -282,10 +230,6 @@ function formatLyrics(lyricsText) {
   }
   // 根据逗号分割歌词
   return lyricsText.split(',');
-=======
-function setAndSrc(index) {
-  context.value.src = songList.value[index].url;
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 }
 /**
  * @params 播放模式
@@ -353,14 +297,9 @@ function onPlay() {
  * @params type 上一首，下一首
  * @params index 当前播放歌曲的索引
  */
-<<<<<<< HEAD
- const changeSong = (type, index) => {
-=======
-const changeSong = (type, index) => {
+function changeSong(type, index) {
   console.log("type", type);
   console.log("index", index);
-
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
   // 上一首
   if (type === "prev") {
     if (songIndex.value === 0) {

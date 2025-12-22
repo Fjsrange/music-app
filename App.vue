@@ -12,9 +12,7 @@ export default {
 };
 </script>
 
-<<<<<<< HEAD
 <style lang="less">
-// 全局 CSS 变量默认值（防止闪白）
 :root {
   --bg-color: #f8f8f8;
   --primary-color: #e84141;
@@ -35,14 +33,4 @@ body {
   padding: 0;
   margin: 0;
 }
-=======
-<style lang="scss">
-/*每个页面公共css */
-body {
-  padding: 0;
-  margin: 0;
-  /* background: -var($bgColor); */
-  background: $bgColor;
-}
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 </style>
