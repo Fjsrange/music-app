@@ -13,15 +13,25 @@
   </uni-section>
 </view> -->
 
-    <Header title="导航栏组件" :background-color="backgroundColor" :font-color="fontColor" :fixed="fixed">
-      <template #left>
-        <text class="title">我的</text>
-      </template>
-      <template #right>
-        <uni-icons type="email" size="28" class="message"></uni-icons>
-        <uni-icons type="settings" size="28" @click="toSetting"></uni-icons>
-      </template>
-		</Header>
+  <Header
+    :background-color="backgroundColor"
+    :font-color="fontColor"
+    :fixed="fixed"
+    :defaultMenuWidth="146"
+  >
+    <template #left>
+      <text class="title">我的</text>
+    </template>
+    <template #right>
+      <uni-icons type="email" size="28" class="message"></uni-icons>
+      <uni-icons
+        type="settings"
+        size="28"
+        class="message"
+        @click="toSetting"
+      ></uni-icons>
+    </template>
+  </Header>
 
   <view class="my-card">
     <view class="card-msg">
@@ -32,16 +42,20 @@
 
   <view class="card-tab">
     <view class="tab" v-for="item in 4">
-      <image src="../../static/logo.png" mode="" style="width: 40px; height: 40px"></image>
-      <span>喜欢</span>
-      <span>188</span>
+      <image
+        src="../../static/logo.png"
+        mode=""
+        style="width: 40px; height: 40px"
+      ></image>
+      <span class="count">喜欢</span>
+      <span class="count">188</span>
     </view>
   </view>
   <view class="card-tab">
     <view class="tab" v-for="item in cardTabList" @click="goTab(item.url)">
       <image :src="item.icon" mode="" style="width: 40px; height: 40px"></image>
-      <span>{{ item.title }}</span>
-      <span>{{ item.sum }}</span>
+      <span class="count">{{ item.title }}</span>
+      <span class="count">{{ item.sum || "" }}</span>
     </view>
   </view>
 
@@ -78,8 +92,7 @@ import { tabList } from "./tabList.js";
 import searchVue from "@/components/searchVue/searchVue.vue";
 import Header from "@/components/Header/Header.vue";
 
-
-const backgroundColor = ref("#f8f8f8");
+const backgroundColor = ref("#f0f5f8");
 const fontColor = ref("#333");
 const fixed = ref(true);
 const songList = ref([]); // 歌单
@@ -119,25 +132,28 @@ function goTab(url) {
 .title {
   font-size: 32rpx;
   font-weight: 600;
+  border-bottom: 6rpx solid #07c160;
 }
 .message {
   margin: 0 10rpx;
 }
 
 .my-card {
-  padding: 20rpx;
-  height: 200rpx;
-  border: 2rpx solid #333;
+  padding: 32rpx;
+  height: 160rpx;
+  background-color: #fff;
+  // border: 2rpx solid #333;
   border-radius: 20rpx;
   margin-top: 120rpx;
   .card-msg {
     display: flex;
     align-items: center;
 
-    // .msg-img {
-    // 	width: 100rpx;
-    // 	height: 100rpx;
-    // }
+    .msg-img {
+      // width: 100rpx;
+      // height: 100rpx;
+      border-radius: 50%;
+    }
     .msg-name {
       margin-left: 28rpx;
     }
@@ -159,7 +175,6 @@ function goTab(url) {
 
   .tab {
     width: 20%;
-    background-color: #ccc;
     padding: 10rpx 0;
     display: flex;
     flex-direction: column;
@@ -167,7 +182,9 @@ function goTab(url) {
     align-items: center;
   }
 }
-
+.count {
+  height: 44rpx;
+}
 .my-song {
   .song-title {
     padding: 20rpx 0;
@@ -221,6 +238,7 @@ function goTab(url) {
     }
   }
 
-  .music-card {}
+  .music-card {
+  }
 }
 </style>

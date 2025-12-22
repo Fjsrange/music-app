@@ -1,5 +1,10 @@
 <template>
-  <Header title="" :background-color="backgroundColor" :font-color="fontColor" :fixed="fixed">
+  <Header
+    title=""
+    :background-color="backgroundColor"
+    :font-color="fontColor"
+    :fixed="fixed"
+  >
   </Header>
   <!-- 本周精选 -->
   <view class="week-recommend">
@@ -131,10 +136,25 @@
 
     <view class="player-controls">
       <!-- <text class="control-btn">⏮</text> -->
-      <text class="play-btn" @click="togglePlay">
+      <!-- <text class="play-btn" @click="togglePlay">
         {{ isPlaying ? "⏸" : "▶" }}
-      </text>
-      <text class="control-btn">⏭</text>
+      </text> -->
+      <image
+        :src="
+          !isPlaying
+            ? '../../static/images/play/pause-icon.png'
+            : '../../static/images/play/play-icon.png'
+        "
+        mode="aspectFill"
+        style="width: 20px; height: 20px"
+        @click="togglePlay"
+      ></image>
+      <!-- <text class="control-btn">⏭</text> -->
+      <image
+        src="../../static/images/play/next-icon.png"
+        mode="aspectFill"
+        style="width: 20px; height: 20px"
+      ></image>
     </view>
   </view>
 </template>
@@ -145,7 +165,7 @@ import searchVue from "@/components/searchVue/searchVue.vue";
 import getMovies from "../../api/movies.json";
 import Header from "@/components/Header/Header.vue";
 
-const backgroundColor = ref("#f8f8f8");
+const backgroundColor = ref("#f0f5f8");
 const fontColor = ref("#333");
 const fixed = ref(true);
 const title = "hello";
@@ -161,8 +181,8 @@ uni.setStorageSync("movies", JSON.stringify(getMovies.data));
 const onPageScroll = (e) => {
   if (e.scrollTop < 5) {
     // 顶部附近 - 白色字体，透明背景
-    fontColor.value = '#fff';
-    backgroundColor.value = 'transparent';
+    fontColor.value = "#fff";
+    backgroundColor.value = "transparent";
   } else if (e.scrollTop < 50) {
     // 滚动中间过程 - 渐变效果
     const rate = e.scrollTop / 50;
@@ -170,10 +190,10 @@ const onPageScroll = (e) => {
     fontColor.value = `rgba(51, 51, 51, ${rate})`;
   } else {
     // 滚动较多 - 完全不透明背景，黑色字体
-    backgroundColor.value = 'rgba(248, 248, 248, 1)';
-    fontColor.value = 'rgba(51, 51, 51, 1)';
+    backgroundColor.value = "rgba(248, 248, 248, 1)";
+    fontColor.value = "rgba(51, 51, 51, 1)";
   }
-}
+};
 function handleTouchStart(type) {
   console.log("开始触摸");
   if (type === "isCustomActive") {

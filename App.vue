@@ -14,7 +14,7 @@ export default {
 
 <style lang="less">
 :root {
-  --bg-color: #f8f8f8;
+  --bg-color: #f0f5f8;
   --primary-color: #e84141;
   --secondary-color: #ff6b6b;
   --text-color: #222;
@@ -24,13 +24,15 @@ export default {
   --mask-bg: rgba(0, 0, 0, 0.4);
 }
 #app {
-  background-color: var(--bg-color);
+  // background-color: var(--bg-color);
   min-height: 100vh;
   padding: 40rpx;
+  height: 100%;
 }
 /*每个页面公共css */
 body {
   padding: 0;
   margin: 0;
+  background-color: var(--bg-color);
 }
 </style>

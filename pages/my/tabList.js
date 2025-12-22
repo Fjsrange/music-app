@@ -22,9 +22,8 @@ export const tabList = [
   },
   {
     id: 4,
-    title: "历史",
+    title: "已购",
     icon: "/static/logo.png",
     url: "/pages/my/list",
-    sum: 17,
   },
 ];

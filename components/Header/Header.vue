@@ -2,26 +2,31 @@
   <!-- #ifndef MP-ALIPAY -->
   <view
     class="cos-header"
-    :class="{ 'is_fixed': fixed }"
-    :style="{ height: height + 'px', backgroundColor: backgroundColor, zIndex: zIndex, color: fontColor }"
+    :class="{ is_fixed: fixed }"
+    :style="{
+      height: height + 'rpx',
+      backgroundColor: backgroundColor,
+      zIndex: zIndex,
+      color: fontColor,
+    }"
   >
     <image
       :src="backgroundImage"
       class="nav-bg"
       mode="scaleToFill"
-      :style="{ height: height + 'px' }"
+      :style="{ height: height + 'rpx' }"
     ></image>
 
     <!-- 状态栏占位 -->
-    <div :style="{ height: statusBarHeight + 'px' }"></div>
+    <div :style="{ height: statusBarHeight + 'rpx' }"></div>
 
     <!-- 导航栏 -->
-    <view class="nav-wrapper" :style="{ height: navBarHeight + 'px' }">
+    <view class="nav-wrapper" :style="{ height: navBarHeight + 'rpx' }">
       <!-- 返回按钮 -->
       <view
         class="nav-back"
         v-if="isShowLeft"
-        :style="{ width: menuButtonRect.width + 'px' }"
+        :style="{ width: menuButtonRect.width + 'rpx' }"
         @click="handleBack"
       >
         <slot name="left">
@@ -49,7 +54,7 @@
       <view
         class="nav-menu"
         v-if="isShowRight"
-        :style="{ width: menuButtonRect.width + 'px' }"
+        :style="{ width: menuButtonRect.width + 'rpx' }"
       >
         <slot name="right"></slot>
       </view>
@@ -63,147 +68,147 @@
 const props = defineProps({
   title: {
     type: String,
-    default: ''
+    default: "",
   },
   homeUrl: {
     type: String,
-    default: '/pages/index/index'
+    default: "/pages/index/index",
   },
   homeIcon: {
     type: String,
-    default: ''
+    default: "",
   },
   backUrl: {
     type: String,
-    default: ''
+    default: "",
   },
   backIcon: {
     type: String,
-    default: ''
+    default: "",
   },
   fixed: {
     type: Boolean,
-    default: false
+    default: false,
   },
   zIndex: {
     type: Number,
-    default: 99
+    default: 99,
   },
   backgroundColor: {
     type: String,
-    default: '#fff'
+    default: "#fff",
   },
   backgroundImage: {
     type: String,
-    default: ''
+    default: "",
   },
   fontColor: {
     type: String,
-    default: '#000'
+    default: "#000",
   },
   isShowBack: {
     type: Boolean,
-    default: true
+    default: true,
   },
   isShowLeft: {
     type: Boolean,
-    default: true
+    default: true,
   },
   isShowRight: {
     type: Boolean,
-    default: true
+    default: true,
   },
   defaultNavBarheight: {
     type: Number,
-    default: 60
+    default: 120,
   },
   defaultMenuWidth: {
     type: Number,
-    default: 60
+    default: 120,
   },
   jumpMap: {
     type: Object,
-    default: () => ({ home: '', back: '' })
-  }
-})
+    default: () => ({ home: "", back: "" }),
+  },
+});
 
 // 响应式数据
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from "vue";
 
-const statusBarHeight = ref(0)
-const navBarHeight = ref(props.defaultNavBarheight)
-const menuButtonRect = ref({ width: props.defaultMenuWidth })
-const height = ref(props.defaultNavBarheight)
-const isFirstPage = ref(true)
+const statusBarHeight = ref(0);
+const navBarHeight = ref(props.defaultNavBarheight);
+const menuButtonRect = ref({ width: props.defaultMenuWidth });
+const height = ref(props.defaultNavBarheight);
+const isFirstPage = ref(true);
 
 // 方法
 const setTitle = () => {
   // #ifdef MP-ALIPAY
-  uni.setNavigationBarTitle({ title: props.title })
+  uni.setNavigationBarTitle({ title: props.title });
   // #endif
 
   // #ifdef H5
-  document.title = props.title
+  document.title = props.title;
   // #endif
-}
+};
 // 获取胶囊和状态栏信息
 const getRectInfo = () => {
-  const sysInfo = uni.getSystemInfoSync()
-  statusBarHeight.value = sysInfo.statusBarHeight
-  height.value = statusBarHeight.value + props.defaultNavBarheight
+  const sysInfo = uni.getSystemInfoSync();
+  statusBarHeight.value = sysInfo.statusBarHeight;
+  height.value = statusBarHeight.value + props.defaultNavBarheight;
 
   // #ifndef APP-PLUS || H5
-  if (uni.canIUse('getMenuButtonBoundingClientRect')) {
-    const rect = uni.getMenuButtonBoundingClientRect()
-    menuButtonRect.value = rect
-    navBarHeight.value = (rect.top - sysInfo.statusBarHeight) * 2 + rect.height
-    height.value = statusBarHeight.value + navBarHeight.value
+  if (uni.canIUse("getMenuButtonBoundingClientRect")) {
+    const rect = uni.getMenuButtonBoundingClientRect();
+    menuButtonRect.value = rect;
+    navBarHeight.value = (rect.top - sysInfo.statusBarHeight) * 2 + rect.height;
+    height.value = statusBarHeight.value + navBarHeight.value;
   }
   // #endif
-}
+};
 // 获取页面信息，判断是否为首页
 const getPageInfo = () => {
-  const pages = getCurrentPages()
-  isFirstPage.value = pages.length === 1
-}
+  const pages = getCurrentPages();
+  isFirstPage.value = pages.length === 1;
+};
 // 处理返回逻辑
 const handleBack = () => {
-  if (!props.isShowBack) return
+  if (!props.isShowBack) return;
 
-  let url = ''
-  let type = ''
+  let url = "";
+  let type = "";
 
   if (!isFirstPage.value) {
-    url = props.backUrl || ''
-    type = props.jumpMap.back || ''
+    url = props.backUrl || "";
+    type = props.jumpMap.back || "";
   } else {
-    url = props.homeUrl || ''
-    type = props.jumpMap.home || ''
+    url = props.homeUrl || "";
+    type = props.jumpMap.home || "";
   }
 
   if (!url) {
     if (!isFirstPage.value) {
-      uni.navigateBack({ delta: 1 })
+      uni.navigateBack({ delta: 1 });
     }
-    return
+    return;
   }
 
   if (type) {
-    uni[type]({ url })
-    return
+    uni[type]({ url });
+    return;
   }
 
   try {
-    uni.navigateTo({ url })
+    uni.navigateTo({ url });
   } catch (error) {
-    uni.switchTab({ url })
+    uni.switchTab({ url });
   }
-}
+};
 onMounted(() => {
-  getRectInfo()
-  getPageInfo()
-  setTitle()
-})
+  getRectInfo();
+  getPageInfo();
+  setTitle();
+});
 </script>
 
 <style>
