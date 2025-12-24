@@ -1,22 +1,27 @@
 <template>
-  <header>
-    <view class="navbar">
+  
+  <Header
+    title="本地歌曲"
+    :fixed="true"
+    :defaultMenuWidth="50"
+  >
+    <template #left>
       <view @click="$router.back()">
         <image
           src="/static/tabs/back.png"
           style="width: 48rpx; height: 48rpx"
         />
       </view>
-      <view class="title">页面标题</view>
-      <view>
-        <image
+    </template>
+    <template #right>
+      <image
           src="/static/tabs/menu.png"
           class="menu"
           @click="onRightButtonClick"
         />
-      </view>
-    </view>
-  </header>
+    </template>
+  </Header>
+  <searchVue></searchVue>
 
   <!-- 排序 -->
   <view
@@ -25,8 +30,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20rpx 40rpx;
-      margin-top: 32rpx;
+      margin-bottom: 20rpx;
     "
   >
     <view class="" style="display: flex">
@@ -116,41 +120,56 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import playerVue from "../../../components/playerVue/playerVue";
+import Header from "@/components/Header/Header.vue";
+import searchVue from "@/components/searchVue/searchVue.vue";
 
 const isPopupVisible = ref(false); // 控制弹窗显示与隐藏
 const audioList = ref([]); // 本地音频列表
 const context = ref(null); // 音频上下文
 
 onMounted(() => {
-  // 获取本地音频列表
-  console.log("onMounted", JSON.parse(uni.getStorageSync("audio-list")));
-  audioList.value = JSON.parse(uni.getStorageSync("audio-list")).map((item) => {
-    return {
-      id: item.id,
-      sing: item.title,
-      song: item.artist,
-      url: item.path,
-      autoplay: false, // 是否自动播放
-      currentTime: 0, // 当前播放时间
-      paused: false, // 是否暂停
-    };
-  });
-  console.log("audioList.value", audioList.value);
-  context.value = uni.createInnerAudioContext();
-  context.value.src = audioList.value[0].url;
-  console.log("context.value", context.value);
-  context.value.play();
-
-  context.value.onPlay(() => {
-    console.log("开始播放");
-  });
-  context.value.onError((res) => {
-    console.log(res);
-  });
-  context.value.onEnded(() => {
-    console.log("播放结束");
-  });
+  // getLocalAudioList();
 });
+
+// 获取音频列表
+// getLocalAudioList();
+// 获取本地存储的音频列表
+function getLocalAudioList(){
+  try {
+    const storedList = uni.getStorageSync("localAudioList");
+    console.log('storedList', storedList);
+    if (storedList) {
+      audioList.value = JSON.parse(storedList).map((item) => {
+        return {
+          id: item.id,
+          sing: item.title,
+          song: item.artist,
+          url: item.path,
+          autoplay: false,
+          currentTime: 0,
+          paused: false,
+        };
+      });
+      
+      // 检查是否已有音频上下文，如果有则销毁
+      // if (context.value) {
+      //   context.value.destroy(); // 或者先暂停
+      // }
+      
+      // 创建新的音频上下文
+      context.value = uni.createInnerAudioContext();
+      console.log('audioList.value', audioList.value);
+      console.log('context.value', context.value);
+      
+      if (audioList.value.length > 0) {
+        context.value.src = audioList.value[0].url;
+      }
+    }
+  } catch (error) {
+    console.error("获取本地音频列表失败:", error);
+  }
+}
+
 
 // 点击设置按钮
 function onRightButtonClick() {
@@ -168,19 +187,19 @@ function goScan() {
 </script>
 
 <style lang="scss" scoped>
-header {
-  position: fixed;
-  top: 0;
-  z-index: 9999999999;
-  width: 100vw;
-}
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20rpx;
-  background-color: #f8f8f8;
-}
+// header {
+//   position: fixed;
+//   top: 0;
+//   z-index: 9999999999;
+//   width: 100vw;
+// }
+// .navbar {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   padding: 20rpx;
+//   background-color: #f8f8f8;
+// }
 
 .title {
   font-size: 18px;
@@ -196,8 +215,9 @@ header {
   position: fixed;
   top: 50px;
   right: 10px;
-  background: #eee;
+  background: #fff;
   padding: 17px;
   line-height: 28px;
+  border-radius: 20rpx;
 }
 </style>

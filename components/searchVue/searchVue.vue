@@ -17,7 +17,8 @@ const songName = debounceRef('', 500); // 搜索的内容 防抖的时间
 <style>
 .search {
 	border: 2rpx solid #ccc;
-	margin: 20rpx 40rpx;
+	/* margin: 20rpx 40rpx; */
+	margin: 50px 0 20px;
 	border-radius: 40rpx;
 	padding: 10rpx 20rpx;
 }

@@ -161,10 +161,32 @@ const songList = ref(JSON.parse(uni.getStorageSync("movies"))); // 获取音乐�
 
 let songIndex = ref(0); // 当前播放歌曲的索引
 let playStatus = ref(false); // 播放状态 true 暂停 false 播放
-let playStatusMode = ref('stop'); // 播放状态icon
+let playStatusMode = ref('pause'); // 播放状态icon
 let isPopupShow = ref(false); // 是否显示播放列表
 
 
+// 在播放时更新当前歌词行
+watch(currentTime, () => {
+  // 更新当前歌词索引的逻辑
+  // updateCurrentLyricIndex();
+  scrollToCurrentLyric();
+});
+// 可以根据歌词行数动态调整高度
+const updateLyricsContainerHeight = () => {
+  const lyricsLines = formatLyrics(context.value.lyrics).length;
+  // 每行约40rpx，最多显示8行
+  const calculatedHeight = Math.min(lyricsLines * 40, 320);
+  lyricsContainerHeight.value = calculatedHeight;
+};
+
+const scrollToCurrentLyric = () => {
+  // 滚动到当前歌词行
+  const lyricsContainer = document.querySelector('.lyrics-container');
+  const lineHeight = 40; // 每行歌词的高度，单位为rpx
+  const scrollTop = currentLyricIndex.value * lineHeight;
+  lyricsContainer.scrollTop = scrollTop;
+  updateLyricsContainerHeight();
+};
 /**
  * 从本地存储中获取当前歌曲索引
  * @returns 当前歌曲索引 || 0
@@ -286,7 +308,7 @@ function setupAudioListeners() {
 function onPlay() {
   if (!context.value.paused) {
     context.value.pause();
-    playStatusMode.value = "stop";
+    playStatusMode.value = "pause";
   } else {
     playMusic();
     playStatusMode.value = "play";
@@ -297,9 +319,12 @@ function onPlay() {
  * @params type 上一首，下一首
  * @params index 当前播放歌曲的索引
  */
-function changeSong(type, index) {
+function changeSong(type, index = songIndex.value) {
   console.log("type", type);
   console.log("index", index);
+  if(!index) {
+
+  }
   // 上一首
   if (type === "prev") {
     if (songIndex.value === 0) {
@@ -353,14 +378,31 @@ const sliderChange = (e) => {
 };
 
 function playMusic() {
-  console.log('context.value.duration',context.value.duration);
-  
-  if (!context.value.duration) {
-    uni.showToast({
-      title: "该歌曲暂不支持播放",
-      icon: "none",
+  // 检查音频是否已经加载完成
+  if (isNaN(context.value.duration) || context.value.duration <= 0) {
+    // 设置 canplay 事件监听器，等待音频加载完成
+    context.value.onCanplay(() => {
+      console.log('音频加载完成，duration:', context.value.duration);
+      
+      if (isNaN(context.value.duration) || context.value.duration <= 0) {
+        uni.showToast({
+          title: "该歌曲暂不支持播放",
+          icon: "none",
+        });
+        changeSong("next");
+      } else {
+        context.value.play();
+      }
     });
-    context.value.duration == null ? changeSong("next") : 0;
+    // 设置错误处理
+    context.value.onError((error) => {
+      console.error('音频播放错误:', error);
+      uni.showToast({
+        title: "歌曲加载失败",
+        icon: "none",
+      });
+      changeSong("next");
+    });
   } else {
     context.value.play();
   }
@@ -375,11 +417,13 @@ onUnmounted(() => {
 <style lang="scss">
 .music {
   margin: 40rpx;
-  width: 672rpx;
+  // width: 672rpx; // 25.12.24
+  width: 90%; // 25.12.24
   position: fixed;
   bottom: 9%;
   left: 0;
   .music-box {
+    width: 100%; // 25.12.24
     .music-time {
       display: flex;
       justify-content: space-between;
@@ -388,6 +432,7 @@ onUnmounted(() => {
   }
 
   .play-btn {
+    width: 100%; // 25.12.24
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -417,6 +462,17 @@ image {
   transition: height 0.3s;
   overflow: hidden;
   z-index: 1001;
+}
+.lyrics-container {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.current-line {
+  color: #31c27c;
+  font-weight: bold;
+  // transform: scale(1.05);
+  font-size: 36rpx;
 }
 
 .popup-show {

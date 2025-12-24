@@ -96,7 +96,7 @@ const props = defineProps({
   },
   backgroundColor: {
     type: String,
-    default: "#fff",
+    default: "#f0f5f8",
   },
   backgroundImage: {
     type: String,

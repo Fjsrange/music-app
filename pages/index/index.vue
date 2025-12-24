@@ -70,7 +70,7 @@
   <view class="activity-song-list">
     <text class="title">活动歌单推荐</text>
     <view class="song-list">
-      <view class="song-item">
+      <view class="song-item" @click="toSongList">
         <image
           src="https://picsum.photos/200/300"
           mode="aspectFill"
@@ -213,6 +213,15 @@ function handleTouchEnd(type) {
  * @remarks 打开当前歌曲
  */ function onPlaySong() {
   console.log("播放歌曲");
+}
+/**
+ * 跳转到歌单
+ * @remarks 跳转到歌单页面
+ */
+function toSongList() {
+  uni.navigateTo({
+    url: "/pages/songList/songList",
+  });
 }
 // 播放 & 暂停
 const togglePlay = () => {
