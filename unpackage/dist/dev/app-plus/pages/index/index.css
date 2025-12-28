@@ -1,10 +1,56 @@
 
-<<<<<<< HEAD
 .search {
 	border: 0.0625rem solid #ccc;
-	margin: 0.625rem 1.25rem;
+	/* margin: 20rpx 40rpx; */
+	margin: 50px 0 20px;
 	border-radius: 1.25rem;
 	padding: 0.3125rem 0.625rem;
+}
+
+
+.cos-header[data-v-5ada1ca4] {
+  position: relative;
+  width: 100vw;
+}
+.nav-bg[data-v-5ada1ca4] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+}
+.is_fixed[data-v-5ada1ca4] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 99;
+}
+.nav-wrapper[data-v-5ada1ca4] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  height: 100%; /* 666666 */
+}
+.img[data-v-5ada1ca4] {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+.nav-back[data-v-5ada1ca4] {
+  flex-shrink: 0;
+}
+.nav-title[data-v-5ada1ca4] {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}
+.nav-menu[data-v-5ada1ca4] {
+  flex-shrink: 0;
 }
 
 .week-recommend {
@@ -14,7 +60,7 @@
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.1);
-  margin-bottom: 1.875rem;
+  margin: 3.75rem 0 1.875rem 0;
 }
 .week-recommend .bg-image {
   width: 100%;
@@ -251,35 +297,4 @@
 .music-player .player-controls .play-btn {
   font-size: 1.25rem;
   color: #000;
-=======
-.search {
-	border: 0.0625rem solid #ccc;
-	margin: 0.625rem 1.25rem;
-	border-radius: 1.25rem;
-	padding: 0.3125rem 0.625rem;
-}
-
-
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.logo {
-  height: 6.25rem;
-  width: 6.25rem;
-  margin-top: 6.25rem;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1.5625rem;
-}
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-.title {
-  font-size: 1.125rem;
-  color: #8f8f94;
->>>>>>> 16f964c8dd4cd236b118a9c1ab389a4aaca9621e
 }

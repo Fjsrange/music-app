@@ -111,7 +111,7 @@
   </view>
   <view style="height: 120rpx"></view>
   <!-- 播放栏 -->
-  <view class="music-player">
+  <view class="music-player" @click="toPlayer">
     <image
       src="https://picsum.photos/200/200"
       mode="aspectFill"
@@ -213,6 +213,15 @@ function handleTouchEnd(type) {
  * @remarks 打开当前歌曲
  */ function onPlaySong() {
   console.log("播放歌曲");
+}
+/**
+ * 跳转到歌单
+ * @remarks 跳转到歌单页面
+ */
+function toPlayer() {
+  uni.navigateTo({
+    url: "/pages/player/player",
+  });
 }
 /**
  * 跳转到歌单

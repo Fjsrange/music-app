@@ -1,3 +1,49 @@
+
+.cos-header[data-v-5ada1ca4] {
+  position: relative;
+  width: 100vw;
+}
+.nav-bg[data-v-5ada1ca4] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+}
+.is_fixed[data-v-5ada1ca4] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 99;
+}
+.nav-wrapper[data-v-5ada1ca4] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  height: 100%; /* 666666 */
+}
+.img[data-v-5ada1ca4] {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+.nav-back[data-v-5ada1ca4] {
+  flex-shrink: 0;
+}
+.nav-title[data-v-5ada1ca4] {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}
+.nav-menu[data-v-5ada1ca4] {
+  flex-shrink: 0;
+}
+
 /**
  * 这里是uni-app内置的常用样式变量
  *
@@ -26,7 +72,7 @@
 /* 文章场景相关 */
 .logo[data-v-cc63abb6] {
   text-align: center;
-  margin-top: 3.125rem;
+  margin-top: 6.25rem;
 }
 .logo uni-image[data-v-cc63abb6] {
   width: 11.875rem;

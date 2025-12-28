@@ -1,4 +1,19 @@
 <template>
+  
+  <Header
+    :background-color="backgroundColor"
+    :font-color="fontColor"
+    :fixed="fixed"
+  >
+  <template #left>
+      <view @click="$router.back()">
+        <image
+          src="/static/tabs/back.png"
+          style="width: 48rpx; height: 48rpx"
+        />
+      </view>
+    </template>
+  </Header>
   <view style="width: 90%;
       height: 80%;
       margin: auto;
@@ -138,11 +153,13 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from "vue";
-// import lyrics from "../../assets/lyrics.js";
-// import { lyrics } from "../../assets/lyrics.js";
+import Header from "@/components/Header/Header.vue";
 import lyrics from '@/assets/lyrics/lyrics.js'
 console.log('lyrics', lyrics);
 
+const backgroundColor = ref("#f0f5f8");
+const fontColor = ref("#333");
+const fixed = ref(true);
 // 歌词相关
 const lyricsContainerHeight = ref(300); // 歌词容器高度，默认300rpx
 const currentLyricIndex = ref(0); // 当前高亮的歌词行
@@ -166,11 +183,11 @@ let isPopupShow = ref(false); // 是否显示播放列表
 
 
 // 在播放时更新当前歌词行
-watch(currentTime, () => {
-  // 更新当前歌词索引的逻辑
-  // updateCurrentLyricIndex();
-  scrollToCurrentLyric();
-});
+// watch(currentTime, () => {
+//   // 更新当前歌词索引的逻辑
+//   // updateCurrentLyricIndex();
+//   scrollToCurrentLyric();
+// });
 // 可以根据歌词行数动态调整高度
 const updateLyricsContainerHeight = () => {
   const lyricsLines = formatLyrics(context.value.lyrics).length;

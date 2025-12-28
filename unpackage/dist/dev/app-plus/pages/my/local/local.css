@@ -60,6 +60,61 @@
   flex: 1;
   margin-left: 0.625rem;
 }
+
+.cos-header[data-v-5ada1ca4] {
+  position: relative;
+  width: 100vw;
+}
+.nav-bg[data-v-5ada1ca4] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100vw;
+}
+.is_fixed[data-v-5ada1ca4] {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 99;
+}
+.nav-wrapper[data-v-5ada1ca4] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  height: 100%; /* 666666 */
+}
+.img[data-v-5ada1ca4] {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+.nav-back[data-v-5ada1ca4] {
+  flex-shrink: 0;
+}
+.nav-title[data-v-5ada1ca4] {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}
+.nav-menu[data-v-5ada1ca4] {
+  flex-shrink: 0;
+}
+
+
+.search {
+	border: 0.0625rem solid #ccc;
+	/* margin: 20rpx 40rpx; */
+	margin: 50px 0 20px;
+	border-radius: 1.25rem;
+	padding: 0.3125rem 0.625rem;
+}
+
 /**
  * 这里是uni-app内置的常用样式变量
  *
@@ -86,19 +141,6 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-header[data-v-b206a8a5] {
-  position: fixed;
-  top: 0;
-  z-index: 9999999999;
-  width: 100vw;
-}
-.navbar[data-v-b206a8a5] {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.625rem;
-  background-color: #f8f8f8;
-}
 .title[data-v-b206a8a5] {
   font-size: 18px;
 }
@@ -111,7 +153,8 @@ header[data-v-b206a8a5] {
   position: fixed;
   top: 50px;
   right: 10px;
-  background: #eee;
+  background: #fff;
   padding: 17px;
   line-height: 28px;
+  border-radius: 0.625rem;
 }

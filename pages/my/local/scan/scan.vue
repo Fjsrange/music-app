@@ -1,8 +1,5 @@
 <template>
-  <Header
-    title="扫描歌曲"
-    :fixed="true"
-  >
+  <Header title="扫描歌曲" :fixed="true">
     <template #left>
       <view @click="$router.back()">
         <image
@@ -42,19 +39,26 @@ const audioList = ref([]); // 扫描到的音频列表
 const infoArr = ref([]); // 扫描到的音频信息
 // ------------------------------------------------
 // 检查是否在 App 环境中
+// function isAppEnvironment() {
+//   console.log("window", window);
+//   console.log("plus", plus);
+
+//   return typeof window !== "undefined" && typeof plus !== "undefined";
+// }
 function isAppEnvironment() {
-  return typeof window !== 'undefined' && typeof plus !== 'undefined';
+  const systemInfo = uni.getSystemInfoSync();
+  return systemInfo.platform === "android" || systemInfo.platform === "ios";
 }
 // 开始或取消扫描
 function startScan() {
-    // 检查是否在 App 环境中
-    if (!isAppEnvironment()) {
-      uni.showToast({
-        title: '仅在App中可用',
-        icon: 'none'
-      });
-      return;
-    }
+  // 检查是否在 App 环境中
+  if (!isAppEnvironment()) {
+    uni.showToast({
+      title: "仅在App中可用",
+      icon: "none",
+    });
+    return;
+  }
   if (isStart.value) {
     console.log("取消扫描");
     uni.navigateBack();
@@ -62,13 +66,19 @@ function startScan() {
     console.log("开始扫描");
     isStart.value = true;
 
-
     // 导入android相关类
+    console.log("111");
     const Context = plus.android.importClass("android.content.Context");
-    const ContentResolver = plus.android.importClass("android.content.ContentResolver");
+    console.log("Context", Context);
+
+    const ContentResolver = plus.android.importClass(
+      "android.content.ContentResolver"
+    );
     const Uri = plus.android.importClass("android.net.Uri");
     const MediaStore = plus.android.importClass("android.provider.MediaStore");
-    const MediaMetadataRetriever = plus.android.importClass("android.media.MediaMetadataRetriever");
+    const MediaMetadataRetriever = plus.android.importClass(
+      "android.media.MediaMetadataRetriever"
+    );
 
     // 获取主Activity和ContentResolver对象
     const main = plus.android.runtimeMainActivity();
@@ -82,12 +92,17 @@ function startScan() {
       MediaStore.Audio.Media.ARTIST,
       MediaStore.Audio.Media.DATA,
       MediaStore.Audio.Media.DURATION, // 添加时长字段
-      MediaStore.Audio.Media.SIZE      // 添加大小字段
+      MediaStore.Audio.Media.SIZE, // 添加大小字段
     ];
 
     try {
-      // 查询音频数据
       const cursor = contentResolver.query(uri, projection, null, null, null);
+
+      // 添加详细检查
+      console.log("cursor类型:", typeof cursor);
+      console.log("cursor方法:", Object.keys(cursor));
+      // 查询音频数据
+      // const cursor = contentResolver.query(uri, projection, null, null, null);
 
       // 如果查询结果不为空
       if (cursor.moveToFirst()) {
@@ -130,26 +145,27 @@ function startScan() {
               artist,
               path,
               duration: durationInSeconds,
-              size: sizeInKB
+              size: sizeInKB,
             });
           }
         } while (cursor.moveToNext());
       }
-      
+
       // 关闭查询结果
       cursor.close();
 
       // 保存到本地存储
       uni.setStorageSync("audio-list", JSON.stringify(audioList.value));
       console.log("扫描完成，找到", audioList.value.length, "个音频文件");
-      
+
       // 返回上一页
       uni.navigateBack();
     } catch (error) {
       console.error("扫描音频文件失败:", error);
       uni.showToast({
-        title: '扫描失败',
-        icon: 'none'
+        title: "扫描失败",
+        icon: "none",
+        message: error.message,
       });
     }
   }

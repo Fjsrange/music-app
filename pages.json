@@ -28,6 +28,7 @@
     {
       "path": "pages/test/test",
       "style": {
+				"navigationStyle": "custom", // 隐藏默认顶部导航
         "navigationBarTitleText": ""
       }
     },
@@ -64,6 +65,13 @@
     	"style" : 
     	{
 				"navigationStyle": "custom", // 隐藏默认顶部导航
+    		"navigationBarTitleText" : ""
+    	}
+    },
+    {
+    	"path" : "pages/player/player",
+    	"style" : 
+    	{
     		"navigationBarTitleText" : ""
     	}
     }
