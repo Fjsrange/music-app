@@ -447,7 +447,7 @@ const togglePlay = () => {
 
 .music-player {
   position: fixed;
-  bottom: 6.5%;
+  bottom: 5%;
   left: 0;
   right: 0;
   height: 100rpx;

@@ -1,13 +1,18 @@
 <!-- Tab 2：完整歌词（带 fixed header） -->
 <!-- components/player/LyricScrollTab.vue -->
 <template>
-  {{ "2：完整歌词（带" }}
   <scroll-view scroll-y class="lyric-scroll">
+    <!-- 固定头部（仅歌词 Tab） -->
+    <view class="fixed-header">
+      <text>{{ currentSong.title || "未知歌曲" }}</text>
+      <text>{{ currentSong.artist || "未知歌手" }}</text>
+    </view>
     <!-- 可选：在滚动区域顶部也显示一次（非固定） -->
     <!-- <view class="header-placeholder">
       <text class="title">{{ title }}</text>
       <text class="artist">{{ artist }}</text>
     </view> -->
+    <view style="height: 120rpx;"></view>
 
     <view v-if="lyrics.length === 0" class="empty">暂无歌词</view>
     <view v-else class="lyric-list">
@@ -19,6 +24,7 @@
 </template>
 
 <script setup>
+import { ref, computed } from "vue";
 defineProps({
   lyrics: {
     type: Array,
@@ -33,13 +39,28 @@ defineProps({
     default: "",
   },
 });
+const currentSong = ref({
+  title: "",
+  artist: "",
+});
 </script>
 
 <style scoped>
 .lyric-scroll {
   height: 100%;
-  padding: 20rpx 40rpx;
+  padding: 20rpx 0;
   box-sizing: border-box;
+}
+.fixed-header {
+  height: 120rpx;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  width: 99%;
+  top: 0;
+  left: 0;
+  background: #f0f5f8;
+  line-height: 60rpx;
 }
 .header-placeholder {
   text-align: center;
