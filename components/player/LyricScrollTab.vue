@@ -4,8 +4,8 @@
   <scroll-view scroll-y class="lyric-scroll">
     <!-- 固定头部（仅歌词 Tab） -->
     <view class="fixed-header">
-      <text>{{ currentSong.title || "未知歌曲" }}</text>
-      <text>{{ currentSong.artist || "未知歌手" }}</text>
+      <text class="song">{{ currentSong.title || "未知歌曲" }}</text>
+      <text class="sing">{{ currentSong.artist || "未知歌手" }} ></text>
     </view>
     <!-- 可选：在滚动区域顶部也显示一次（非固定） -->
     <!-- <view class="header-placeholder">
@@ -45,7 +45,7 @@ const currentSong = ref({
 });
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .lyric-scroll {
   height: 100%;
   padding: 20rpx 0;
@@ -61,6 +61,13 @@ const currentSong = ref({
   left: 0;
   background: #f0f5f8;
   line-height: 60rpx;
+  .song {
+    font-size: 48rpx;
+    color: #333;
+  }
+  .sing {
+    color: #666;
+  }
 }
 .header-placeholder {
   text-align: center;

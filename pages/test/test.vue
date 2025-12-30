@@ -6,7 +6,7 @@
     :fixed="fixed"
   >
   <template #left>
-      <view @click="$router.back()">
+      <view @click="toHome">
         <image
           src="/static/tabs/back.png"
           style="width: 48rpx; height: 48rpx"
@@ -424,7 +424,11 @@ function playMusic() {
     context.value.play();
   }
 }
-
+function toHome(){
+  uni.reLaunch({
+    url: '/pages/index/index'
+  });
+}
 onUnmounted(() => {
   // 销毁当前实例
   context.value.destroy();

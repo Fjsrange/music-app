@@ -18,17 +18,17 @@
         },
         /* 模块配置 */
         "modules" : {
-					"Music": {
-					      "description": "音乐播放"
-					    }
-				},
-				"permissions": {
-				    "Android": {
-				      "MANAGE_EXTERNAL_STORAGE": {
-				        "description": "管理外部存储"
-				      }
-				    }
-				  },
+            "Music" : {
+                "description" : "音乐播放"
+            }
+        },
+        "permissions" : {
+            "Android" : {
+                "MANAGE_EXTERNAL_STORAGE" : {
+                    "description" : "管理外部存储"
+                }
+            }
+        },
         /* 应用发布信息 */
         "distribute" : {
             /* android打包配置 */
@@ -48,11 +48,15 @@
                     "<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
-                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_MEDIA_AUDIO\" />",
+                    "<uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />"
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
             "sdkConfigs" : {}
         }
