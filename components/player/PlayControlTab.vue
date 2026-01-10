@@ -137,7 +137,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 import Header from "@/components/Header/Header.vue";
 import lyrics from '@/assets/lyrics/lyrics.js'
 console.log('lyrics', lyrics);
@@ -159,6 +160,7 @@ const props = defineProps({
 
 const emit = defineEmits(["togglePlay", "prev", "next"]);
 
+const playerStore = usePlayerStore();
 // 歌词相关
 const lyricsContainerHeight = ref(300); // 歌词容器高度，默认300rpx
 const currentLyricIndex = ref(0); // 当前高亮的歌词行
@@ -169,10 +171,20 @@ let context = ref({}); // 当前音频
 // 音频信息
 let duration = ref(-1); // 当前音频总时常
 let currentTime = ref(0); // 当前音频播放的位置
-const songList = ref(JSON.parse(uni.getStorageSync("movies"))); // 获取音乐列表
+// const songList = ref(JSON.parse(uni.getStorageSync("music-player"))); // 获取音乐列表
+// const songList = ref(playerStore.playList); // 获取当前播放的音乐列表
+// 歌曲列表和当前索引来自 store
+const songList = computed(() => playerStore.playList || JSON.parse(uni.getStorageSync("music-player")));
+console.log('songList', songList.value);
 
-let songIndex = ref(0); // 当前播放歌曲的索引
-let playStatus = ref(false); // 播放状态 true 暂停 false 播放
+const songIndex = computed(() => playerStore.currentIndex);
+const isPlaying = computed(() => playerStore.isPlaying);
+// 播放模式映射（store 用 0/1/2，UI 用字符串）
+const playModeStr = computed(() => {
+  return ['list', 'single', 'random'][playerStore.playMode] || 'list';
+});
+
+
 let playStatusMode = ref('pause'); // 播放状态icon
 let isPopupShow = ref(false); // 是否显示播放列表
 // 可以根据歌词行数动态调整高度
@@ -215,9 +227,8 @@ onMounted(() => {
   playMode.value = uni.getStorageSync("playMode") || "list";
   // 创建音频上下文
   context.value = uni.createInnerAudioContext();
-  // context.value.autoplay = true; // 进入页面播放
   setAndSrc(songIndex.value); // 设置音频地址
-  playStatus.value = context.value.paused;
+  isPlaying.value = context.value.paused;
   console.log("当前歌曲", context.value);
 
   // 获取音频的总时长，并将其设置为slider组件的max属性
@@ -243,6 +254,9 @@ onMounted(() => {
  * @param index 当前播放歌曲的索引
  */
 function setAndSrc(index){
+  if (!context.value) {
+    context.value = uni.createInnerAudioContext();
+  }
   songIndex.value = index;
   context.value.src = songList.value[songIndex.value].url;
   // 查找匹配的歌词
@@ -289,6 +303,10 @@ const changeMode = () => {
  * 切换播放模式
  */
 function setupAudioListeners() {
+  if (!context.value) {
+    console.error('音频上下文未初始化');
+    return;
+  }
   context.value.onEnded(() => {
     if (playMode.value === "single") {
       // 单曲循环
@@ -310,12 +328,20 @@ function setupAudioListeners() {
  * 播放/暂停 音频
  */
 function onPlay() {
+  // 检查 context.value 是否存在且为有效对象
+  if (!context.value) {
+    console.error('音频上下文未初始化');
+    return;
+  }
   if (!context.value.paused) {
     context.value.pause();
     playStatusMode.value = "pause";
+    playerStore.isPlaying = false;
   } else {
     playMusic();
+    // context.value.play();
     playStatusMode.value = "play";
+    playerStore.isPlaying = true;
   }
 }
 /**
@@ -326,32 +352,24 @@ function onPlay() {
 function changeSong(type, index = songIndex.value) {
   console.log("type", type);
   console.log("index", index);
-  if(!index) {
-
-  }
   // 上一首
   if (type === "prev") {
-    if (songIndex.value === 0) {
-      songIndex.value = songList.value.length - 1; // 如果是第一首歌曲，则跳到列表的最后一首
-    } else {
-      songIndex.value--;
-    }
-    setAndSrc(songIndex.value);
-    onPlay();
+    playerStore.prev();
   } else if (type === "next") {
     // 下一首
-    if (songIndex.value === songList.value.length - 1) {
-      songIndex.value = 0; // 如果是最后一首歌曲，则跳到列表的第一首
-    } else {
-      songIndex.value++;
-    }
-    setAndSrc(songIndex.value);
-    onPlay();
-  } else {
+    playerStore.next();
+  } else if (typeof index === "number") {
     // 点击列表播放对应的歌曲
-    songIndex.value = index;
-    setAndSrc(index);
-    onPlay();
+    // playerStore.playIndex(index);
+    playerStore.playSong(index);
+  }
+
+  // 更新 audio sec（因为store变了）
+  const newSong = playerStore.currentSong;
+  if(newSong) {
+    context.value.src = newSong.url; // 设置音频地址
+    context.value.seek(0); // 重置播放位置
+    playMusic(); // 播放新歌曲
   }
 };
 // 歌曲列表
@@ -381,6 +399,7 @@ const sliderChange = (e) => {
   context.value.seek(value);
 };
 
+// 播放音频
 function playMusic() {
   // 检查音频是否已经加载完成
   if (isNaN(context.value.duration) || context.value.duration <= 0) {

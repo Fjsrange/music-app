@@ -161,6 +161,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 import searchVue from "@/components/searchVue/searchVue.vue";
 import getMovies from "../../api/movies.json";
 import Header from "@/components/Header/Header.vue";
@@ -175,7 +176,13 @@ const isPlaying = ref(false);
 const isCustomActive = ref(false);
 const isActivityActive = ref(false); // 活动
 
-uni.setStorageSync("movies", JSON.stringify(getMovies.data));
+// uni.setStorageSync("music-player", JSON.stringify(getMovies.data));
+// 设置pinia存储
+const playerStore = usePlayerStore();
+// 初始化播放列表
+if (playerStore.playList.length === 0) {
+  playerStore.setPlayList(getMovies.data);
+}
 
 // 页面滚动监听函数（uni-app 自动调用）
 const onPageScroll = (e) => {

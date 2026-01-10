@@ -152,10 +152,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from "vue";
+import { ref, onMounted, onUnmounted, watch, computed } from "vue";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 import Header from "@/components/Header/Header.vue";
 import lyrics from '@/assets/lyrics/lyrics.js'
 console.log('lyrics', lyrics);
+
+const playerStore = usePlayerStore();
 
 const backgroundColor = ref("#f0f5f8");
 const fontColor = ref("#333");
@@ -170,7 +173,10 @@ let context = ref({}); // 当前音频
 // 音频信息
 let duration = ref(-1); // 当前音频总时常
 let currentTime = ref(0); // 当前音频播放的位置
-const songList = ref(JSON.parse(uni.getStorageSync("movies"))); // 获取音乐列表
+// const songList = ref(JSON.parse(uni.getStorageSync("music-player"))); // 获取音乐列表
+// const songList = playerStore.playList; // 获取音乐列表
+const songList = computed(() => playerStore.playList);
+
 // let arr = songList.value.map(item =>{
 //   return `('${item.pic}', '${item.sing}', '${item.song}', '${item.url}');`;
 // });

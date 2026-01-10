@@ -58,6 +58,7 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { usePlayerStore } from "@/stores/usePlayerStore";
 import SongInfoTab from "@/components/player/SongInfoTab.vue";
 import PlayControlTab from "@/components/player/PlayControlTab.vue";
 import LyricScrollTab from "@/components/player/LyricScrollTab.vue";
@@ -74,40 +75,29 @@ const tabs = ref([
 ]);
 // ...其他逻辑
 const currentTab = ref(1);
-const currentSong = ref({});
+const playerStore = usePlayerStore();
+const currentSong = computed(() => playerStore.currentSong || {});
+const isPlaying = computed(() => playerStore.isPlaying);
+const currentLyricLine = computed(() => playerStore.currentLyricLine);
+const lyricLines = computed(() => playerStore.lyricLines);
 
 // 添加tab切换方法
 function switchTab(index) {
   currentTab.value = index;
 }
-// const currentSong = computed(() => {
-//   // return store.state.currentSong;
-//   const currentSong = uni.getStorageSync("currentSong");
-//   return JSON.parse(currentSong);
-// });
-const isPlaying = computed(() => {
-  // return store.state.isPlaying;
-  return uni.getStorageSync("isPlaying");
-});
-const currentLyricLine = computed(() => {
-  // return store.state.currentLyricLine;
-  return uni.getStorageSync("currentLyricLine");
-});
-const lyricLines = computed(() => {
-  // return store.state.lyricLines;
-  return uni.getStorageSync("lyricLines");
-});
-// function togglePlay() {
-//   store.dispatch("togglePlay");
-// }
 
-// function playPrev() {
-//   store.dispatch("playPrev");
-// }
-
-// function playNext() {
-//   store.dispatch("playNext");
-// }
+// 切换播放状态
+function togglePlay() {
+  playerStore.togglePlay();
+}
+// 上一首
+function playPrev() {
+  playerStore.prev();
+}
+// 下一首
+function playNext() {
+  playerStore.next();
+}
 
 function onTabChange(e) {
   console.log('e', e);
